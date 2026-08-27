@@ -15,10 +15,10 @@ const setEnabled = (enabled) => {
 };
 const releaseValves = () => client.writeValve(encodeValveMask(0)).catch((error) => show(error.message));
 
-for (const [wheel, label] of Object.entries({ frontLeft: 'Lewy prz├│d', frontRight: 'Prawy prz├│d', rearLeft: 'Lewy ty┼é', rearRight: 'Prawy ty┼é' })) {
+for (const [wheel, label] of Object.entries({ frontRight: 'Prawy przód', frontLeft: 'Lewy przód', rearRight: 'Prawy tył', rearLeft: 'Lewy tył' })) {
   const card = document.createElement('article');
   card.className = 'wheel';
-  card.innerHTML = `<h3>${label}</h3><div><button class="inflate" data-wheel="${wheel}" data-action="inflate" aria-label="Dopompuj ${label}" disabled>+</button><button class="deflate" data-wheel="${wheel}" data-action="deflate" aria-label="Spu┼Ť─ç ${label}" disabled>-</button></div>`;
+  card.innerHTML = `<h3>${label}</h3><div><button class="inflate" data-wheel="${wheel}" data-action="inflate" aria-label="Dopompuj ${label}" disabled>+</button><button class="deflate" data-wheel="${wheel}" data-action="deflate" aria-label="Spuść ${label}" disabled>-</button></div>`;
   document.querySelector('#wheel-controls').append(card);
 }
 
@@ -42,7 +42,7 @@ client.onRest = (buffer) => {
   const preset = decodePresetReport(buffer);
   if (preset && preset.index === selectedPreset) document.querySelector('#preset-values').textContent = `FL ${preset.frontLeft} | FR ${preset.frontRight} | RL ${preset.rearLeft} | RR ${preset.rearRight} PSI`;
 };
-client.onDisconnect = () => { connected = false; setEnabled(false); connectButton.textContent = 'Po┼é─ůcz'; show('Roz┼é─ůczono.'); };
+client.onDisconnect = () => { connected = false; setEnabled(false); connectButton.textContent = 'Połącz'; show('Rozłączono.'); };
 
 connectButton.addEventListener('click', async () => {
   if (connected) {
@@ -50,9 +50,9 @@ connectButton.addEventListener('click', async () => {
     client.disconnect();
     return;
   }
-  if (!isWebBluetoothAvailable(navigator.bluetooth)) { show('Otw├│rz stron─Ö w Bluefy, aby u┼╝y─ç Bluetooth.'); return; }
-  try { show('Wybierz sterownik w oknie Bluetooth.'); await client.connect(); connected = true; setEnabled(true); show('Po┼é─ůczono.'); connectButton.textContent = 'Roz┼é─ůcz'; }
-  catch { connected = false; setEnabled(false); show('Parowanie lub konfiguracja GATT nie powiod┼éy si─Ö. Roz┼é─ůcz drugi klient i spr├│buj ponownie.'); }
+  if (!isWebBluetoothAvailable(navigator.bluetooth)) { show('Otwórz stronę w Bluefy, aby użyć Bluetooth.'); return; }
+  try { show('Wybierz sterownik w oknie Bluetooth.'); await client.connect(); connected = true; setEnabled(true); show('Połączono.'); connectButton.textContent = 'Rozłącz'; }
+  catch { connected = false; setEnabled(false); show('Parowanie lub konfiguracja GATT nie powiodły się. Rozłącz drugi klient i spróbuj ponownie.'); }
 });
 document.querySelectorAll('[data-preset]').forEach((button) => button.addEventListener('click', async () => {
   selectedPreset = Number(button.dataset.preset); document.querySelectorAll('[data-preset]').forEach((item) => item.classList.toggle('active', item === button)); save.disabled = false;
