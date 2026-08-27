@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0d12">
+    <title>CalkaAIR Control</title>
+    <link rel="stylesheet" href="app.css">
+  </head>
+  <body>
+    <main class="app">
+      <header><div><p class="eyebrow">CALKA AIR</p><h1>Control</h1></div><button id="connect-button">Connect</button></header>
+      <p id="connection-status" role="status">Open this page in Bluefy to use Bluetooth.</p>
+      <section class="pressure-grid" aria-label="Live pressures">
+        <article class="pressure-card"><span>Front Left</span><strong data-pressure="frontLeft">--</strong><small>PSI</small></article>
+        <article class="pressure-card"><span>Front Right</span><strong data-pressure="frontRight">--</strong><small>PSI</small></article>
+        <article class="pressure-card"><span>Rear Left</span><strong data-pressure="rearLeft">--</strong><small>PSI</small></article>
+        <article class="pressure-card"><span>Rear Right</span><strong data-pressure="rearRight">--</strong><small>PSI</small></article>
+        <article class="pressure-card tank"><span>Tank</span><strong data-pressure="tank">--</strong><small>PSI</small></article>
+      </section>
+      <section><div class="section-title"><h2>Individual control</h2><span>Hold to open</span></div><div id="wheel-controls" class="wheel-grid"></div></section>
+      <section><div class="section-title"><h2>Presets</h2><span id="preset-values">Select a preset</span></div><div class="preset-grid">
+        <button data-preset="0">1</button><button data-preset="1">2</button><button data-preset="2">3</button><button data-preset="3">4</button><button data-preset="4">5</button>
+      </div><button id="save-preset" class="save" disabled>Save current pressures</button></section>
+    </main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
