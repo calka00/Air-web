@@ -9,19 +9,19 @@
   </head>
   <body>
     <main class="app">
-      <header><div><p class="eyebrow">CALKA AIR</p><h1>Sterowanie</h1></div><button id="connect-button">Po┼é─ůcz</button></header>
-      <p id="connection-status" role="status">Otw├│rz stron─Ö w Bluefy, aby u┼╝y─ç Bluetooth.</p>
-      <section class="pressure-grid" aria-label="Aktualne ci┼Ťnienia">
-        <article class="pressure-card"><span>Lewy prz├│d</span><strong data-pressure="frontLeft">--</strong><small>PSI</small></article>
-        <article class="pressure-card"><span>Prawy prz├│d</span><strong data-pressure="frontRight">--</strong><small>PSI</small></article>
-        <article class="pressure-card"><span>Lewy ty┼é</span><strong data-pressure="rearLeft">--</strong><small>PSI</small></article>
-        <article class="pressure-card"><span>Prawy ty┼é</span><strong data-pressure="rearRight">--</strong><small>PSI</small></article>
+      <header><div><p class="eyebrow">CALKA AIR</p><h1>Sterowanie</h1></div><button id="connect-button">Połącz</button></header>
+      <p id="connection-status" role="status">Otwórz stronę w Bluefy, aby użyć Bluetooth.</p>
+      <section class="pressure-grid" aria-label="Aktualne ciśnienia">
+        <article class="pressure-card"><span>Prawy przód</span><strong data-pressure="frontRight">--</strong><small>PSI</small></article>
+        <article class="pressure-card"><span>Lewy przód</span><strong data-pressure="frontLeft">--</strong><small>PSI</small></article>
+        <article class="pressure-card"><span>Prawy tył</span><strong data-pressure="rearRight">--</strong><small>PSI</small></article>
+        <article class="pressure-card"><span>Lewy tył</span><strong data-pressure="rearLeft">--</strong><small>PSI</small></article>
         <article class="pressure-card tank"><span>Tank</span><strong data-pressure="tank">--</strong><small>PSI</small></article>
       </section>
-      <section><div class="section-title"><h2>Sterowanie ko┼éami</h2><span>Przytrzymaj, aby otworzy─ç</span></div><div id="wheel-controls" class="wheel-grid"></div></section>
+      <section><div class="section-title"><h2>Sterowanie kołami</h2><span>Przytrzymaj, aby otworzyć</span></div><div id="wheel-controls" class="wheel-grid"></div></section>
       <section><div class="section-title"><h2>Presety</h2><span id="preset-values">Wybierz preset</span></div><div class="preset-grid">
         <button data-preset="0">1</button><button data-preset="1">2</button><button data-preset="2">3</button><button data-preset="3">4</button><button data-preset="4">5</button>
-      </div><button id="save-preset" class="save" disabled>Zapisz bie┼╝─ůce ci┼Ťnienia</button></section>
+      </div><button id="save-preset" class="save" disabled>Zapisz bieżące ciśnienia</button></section>
     </main>
     <script type="module" src="app.js"></script>
   </body>
