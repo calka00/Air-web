@@ -6,6 +6,7 @@ import {
   PACKET_SIZE,
   decodePresetReport,
   decodeStatusReport,
+  encodeCompressorStatus,
   encodePresetRead,
   encodeSaveCurrentPressures,
   encodeValveMask,
@@ -78,7 +79,21 @@ test('decodes manifold status into display wheel order', () => {
     rearLeft: 44,
     rearRight: 22,
     tank: 150,
+    compressorOn: false,
   });
+});
+
+test('encodes compressor state and decodes compressor status bit', () => {
+  const command = new Uint8Array(encodeCompressorStatus(true));
+  assert.deepEqual([...command.slice(0, 8)], [
+    COMMAND.COMPRESSOR_STATUS, 0, 0, 0, 1, 0, 0, 0,
+  ]);
+
+  const bytes = new Uint8Array(PACKET_SIZE);
+  const view = new DataView(bytes.buffer);
+  bytes[0] = COMMAND.STATUS_REPORT;
+  view.setUint32(16, 1 << 1, true);
+  assert.equal(decodeStatusReport(bytes.buffer).compressorOn, true);
 });
 
 test('decodes preset report in firmware wheel order', () => {

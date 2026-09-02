@@ -7,6 +7,7 @@ export const VALVE_UUID = 'e225a15a-e816-4e9d-99b7-c384f91f273b';
 
 export const COMMAND = {
   STATUS_REPORT: 1,
+  COMPRESSOR_STATUS: 24,
   SAVE_CURRENT: 17,
   PRESET_REPORT: 18,
 };
@@ -34,6 +35,12 @@ export function encodeValveMask(mask) {
   return buffer;
 }
 
+export function encodeCompressorStatus(on) {
+  const buffer = createPacket(COMMAND.COMPRESSOR_STATUS);
+  new DataView(buffer).setUint32(4, on ? 1 : 0, true);
+  return buffer;
+}
+
 export function encodeSaveCurrentPressures(index) {
   const buffer = createPacket(COMMAND.SAVE_CURRENT);
   new DataView(buffer).setUint32(4, index, true);
@@ -58,6 +65,7 @@ export function decodeStatusReport(buffer) {
     rearLeft: view.getUint16(10, true),
     rearRight: view.getUint16(6, true),
     tank: view.getUint16(12, true),
+    compressorOn: view.getUint32(16, true) & (1 << 1) ? true : false,
   };
 }
 

@@ -1,17 +1,21 @@
 import { BleClient, isWebBluetoothAvailable } from './ble-client.js';
-import { WHEEL_VALVES, decodePresetReport, decodeStatusReport, encodePresetRead, encodeSaveCurrentPressures, encodeValveMask } from './protocol.js';
+import { WHEEL_VALVES, decodePresetReport, decodeStatusReport, encodeCompressorStatus, encodePresetRead, encodeSaveCurrentPressures, encodeValveMask } from './protocol.js';
 
 const client = new BleClient();
 const connectButton = document.querySelector('#connect-button');
 const status = document.querySelector('#connection-status');
 const save = document.querySelector('#save-preset');
+const compressorButton = document.querySelector('#compressor-button');
+const compressorStatus = document.querySelector('#compressor-status');
 let connected = false;
 let selectedPreset = null;
+let compressorOn = false;
 
 const show = (message) => { status.textContent = message; };
 const setEnabled = (enabled) => {
   document.querySelectorAll('[data-wheel],[data-preset]').forEach((button) => { button.disabled = !enabled; });
   save.disabled = !enabled || selectedPreset === null;
+  compressorButton.disabled = !enabled;
 };
 const releaseValves = () => client.writeValve(encodeValveMask(0)).catch((error) => show(error.message));
 
@@ -37,6 +41,9 @@ client.onStatus = (buffer) => {
   const pressures = decodeStatusReport(buffer);
   if (!pressures) return;
   Object.entries(pressures).forEach(([key, value]) => { document.querySelector(`[data-pressure="${key}"]`).textContent = value; });
+  compressorOn = pressures.compressorOn;
+  compressorStatus.textContent = `Stan: ${compressorOn ? 'WŁĄCZONY' : 'WYŁĄCZONY'}`;
+  compressorButton.textContent = compressorOn ? 'Wyłącz kompresor' : 'Włącz kompresor';
 };
 client.onRest = (buffer) => {
   const preset = decodePresetReport(buffer);
@@ -59,4 +66,10 @@ document.querySelectorAll('[data-preset]').forEach((button) => button.addEventLi
   try { await client.writeRest(encodePresetRead(selectedPreset)); } catch (error) { show(error.message); }
 }));
 save.addEventListener('click', async () => { try { await client.writeRest(encodeSaveCurrentPressures(selectedPreset)); await client.writeRest(encodePresetRead(selectedPreset)); } catch (error) { show(error.message); } });
+compressorButton.addEventListener('click', async () => {
+  try {
+    await client.writeRest(encodeCompressorStatus(!compressorOn));
+    compressorStatus.textContent = 'Stan: oczekiwanie...';
+  } catch (error) { show(error.message); }
+});
 setEnabled(false);
